@@ -44,6 +44,7 @@ class LinkedList
 {
 private:
 	ListNode *head;   // List head pointer
+	int size = 0;
 
 public:
 	// Constructor
@@ -169,21 +170,21 @@ void LinkedList::insertNode(std::string& name, std::string& number)
 
 		// If the new node is to be the 1st in the list,
 		// insert it before all other nodes.
-		if (previousNode == NULL)
+		if (nodePtr)
 		{
-
-			head = newNode;
-			head->next = nodePtr;
-			//exercise 5
-
+			newNode->next = nodePtr;
+			nodePtr->previous = newNode;
 		}
-		else  // Otherwise insert after the previous node.
+		if (previousNode)
 		{
 			newNode->previous = previousNode;
-			newNode->next = nodePtr;
 			previousNode->next = newNode;
 		}
+		else
+			head = newNode;
+
 	}
+	size++;
 }
 
 //*****************************************************
@@ -194,9 +195,8 @@ void LinkedList::insertNode(std::string& name, std::string& number)
 
 void LinkedList::deleteNode(std::string& name)
 {
-	ListNode *nodePtr;       // To traverse the list
-							 //ListNode *previousNode;  // To point to the previous node
-
+	ListNode *nodePtr;        // To traverse the list
+	//ListNode *previousNode;  // To point to the previous node
 							 // If the list is empty, do nothing.
 	if (!head)
 		return;
@@ -208,29 +208,24 @@ void LinkedList::deleteNode(std::string& name)
 
 	// Skip all nodes whose value member is 
 	// not equal to num.
-	while (nodePtr->next != NULL && nodePtr->name != name)
+	while (nodePtr != NULL && nodePtr->name != name)
 	{
+		
 		nodePtr = nodePtr->next;
 	}
 	//if the name is not in the list then return
-	if (nodePtr->name != name)
+	if (!nodePtr)
 		return;
 
-	// If nodePtr is not at the end of the list, 
-	// link the previous node to the node after
-	// nodePtr, then delete nodePtr.
-	if (nodePtr)
-	{
+	if (nodePtr->next)
+		nodePtr->next->previous = nodePtr->previous;
+	if (nodePtr->previous)
 		nodePtr->previous->next = nodePtr->next;
-
-	}
-	// Determine if the first node is the one.
-	else if (!head->previous)
-	{
+	else
 		head = head->next;
-	}
-	delete nodePtr;
 
+
+	
 }
 
 //**************************************************

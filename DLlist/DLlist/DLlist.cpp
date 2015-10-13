@@ -41,7 +41,10 @@ int main()
 
 	// Delete the last node.
 	cout << "Now deleting the last node.\n";
-	list.deleteNode(r6.name);
+	string entry = "jon";
+	list.deleteNode(entry);
+	list.deleteNode(r3.name);
+	list.deleteNode(r4.name);
 
 	// Display the values in the list.
 	cout << "Here are the nodes left.\n";
